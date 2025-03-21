@@ -44,7 +44,11 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ title, setTitle, onAddExpense
         </Select>
       </div>
 
-      <Input className="p-2 border rounded-md mb-2" type="number" placeholder="Rate" value={rate} onChange={(e) => setRate(e.target.value)} />
+      <div className="flex gap-2 mb-2">
+        <Input className="p-2 border rounded-md flex-1" type="number" placeholder="Rate" value={rate} onChange={(e) => setRate(e.target.value)} />
+        <span className="self-center text-gray-600">{unit} </span> {/* Display selected unit */}
+      </div>
+
       <Input className="p-2 border rounded-md mb-2" type="number" placeholder="Paid Price" value={paidPrice} onChange={(e) => setPaidPrice(e.target.value)} />
 
       <Button onClick={handleSubmit} className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md">Add Expense</Button>

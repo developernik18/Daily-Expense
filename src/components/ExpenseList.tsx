@@ -1,36 +1,27 @@
-import { Card, CardContent } from "@/components/ui/card";
+import ExpenseItem from "@/components/ExpenseItem";
 
 interface Expense {
   id: number;
   title: string;
   quantity: number;
   rate: number;
+  paidPrice: number;
+  unit: string;
 }
 
 interface ExpenseListProps {
   expenses: Expense[];
+  onUpdateExpense: (updatedExpense: Expense) => void;
+  onDeleteExpense: (id: number) => void;
 }
 
-const ExpenseList: React.FC<ExpenseListProps> = ({ expenses }) => {
-  const totalAmount = expenses.reduce((acc, expense) => acc + expense.quantity * expense.rate, 0);
-
+const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onUpdateExpense, onDeleteExpense }) => {
   return (
-    <div>
-      <Card className="mt-4 p-4 bg-gray-50 shadow-md rounded-lg">
-        <CardContent>
-          <h3 className="font-semibold text-lg text-gray-800">Total: ₹{totalAmount.toFixed(2)}</h3>
-        </CardContent>
-      </Card>
-
-      <ul className="mt-4 bg-white p-2 rounded-lg shadow">
-        {expenses.map((expense) => (
-          <li key={expense.id} className="border-b last:border-0 py-2 flex justify-between text-gray-700">
-            <span>{expense.title} ({expense.quantity} x ₹{expense.rate.toFixed(2)})</span>
-            <span className="font-semibold">₹{(expense.quantity * expense.rate).toFixed(2)}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className="mt-4 bg-white p-2 rounded-lg shadow">
+      {expenses.map((expense) => (
+        <ExpenseItem key={expense.id} expense={expense} onUpdateExpense={onUpdateExpense} onDeleteExpense={onDeleteExpense} />
+      ))}
+    </ul>
   );
 };
 
