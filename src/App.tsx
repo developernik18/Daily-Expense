@@ -3,6 +3,8 @@ import FrequentTitles from "@/components/FrequentTitles";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
 import ExpenseSummary from "@/components/ExpenseSummary";
+import ExpenseHistory from "@/components/ExpenseHistory";
+
 import { getFormattedDate } from "@/lib/dateUtils";
 
 interface Expense {
@@ -71,12 +73,17 @@ export default function ExpenseTracker() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Expense Tracker</h2>
-      <FrequentTitles onSelect={setTitle} />
-      <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
-      <ExpenseSummary expenses={expenses} />
-      <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
-    </div>
+    <>
+      <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Expense Tracker</h2>
+        <FrequentTitles onSelect={setTitle} />
+        <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
+        <ExpenseSummary expenses={expenses} />
+        <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
+      </div>
+      <ExpenseHistory />
+
+    </>
+
   );
 }
