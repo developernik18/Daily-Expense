@@ -15,11 +15,11 @@ const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
   const [titles, setTitles] = useState<Title[]>(() => {
     const storedTitles = localStorage.getItem("frequentTitles");
     return storedTitles ? JSON.parse(storedTitles) : [
-      { id: 1, name: "Groceries" },
-      { id: 2, name: "Rent" },
-      { id: 3, name: "Utilities" },
-      { id: 4, name: "Transport" },
-      { id: 5, name: "Entertainment" }
+      { id: 1, name: "Milk" },
+      { id: 2, name: "Mixture" },
+      { id: 3, name: "Bread" },
+      { id: 4, name: "Coconut" },
+      { id: 5, name: "Jalebi" }
     ];
   });
 
