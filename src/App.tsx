@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FrequentTitles from "@/components/FrequentTitles";
 import ExpenseForm from "@/components/ExpenseForm";
 import ExpenseList from "@/components/ExpenseList";
 import ExpenseSummary from "@/components/ExpenseSummary";
+import { getFormattedDate } from "@/lib/dateUtils";
 
 interface Expense {
   id: number;
@@ -15,19 +16,58 @@ interface Expense {
 
 export default function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [title, setTitle] = useState(""); // Track the title input
+  const [title, setTitle] = useState(""); // Track title input
+  const currentDate = getFormattedDate();
+
+  // Load expenses from localStorage on mount
+  useEffect(() => {
+    const storedExpenses = localStorage.getItem(`expenses-${currentDate}`);
+    if (storedExpenses) {
+      try {
+        setExpenses(JSON.parse(storedExpenses));
+      } catch (error) {
+        console.error("Error parsing stored expenses:", error);
+        setExpenses([]);
+      }
+    } else {
+      setExpenses([]);
+    }
+  }, [currentDate]);
+
+  // Save expenses to localStorage whenever they update
+  useEffect(() => {
+    if (expenses.length > 0) {
+      localStorage.setItem(`expenses-${currentDate}`, JSON.stringify(expenses));
+    }
+  }, [expenses, currentDate]);
 
   const addExpense = (title: string, quantity: number, rate: number, paidPrice: number, unit: string) => {
-    setExpenses([...expenses, { id: Date.now(), title, quantity, rate, paidPrice, unit }]);
-    setTitle(""); // Reset title after adding an expense
+    if (!title) return;
+    const newExpense = { id: Date.now(), title, quantity, rate, paidPrice, unit };
+
+    setExpenses((prev) => {
+      const updatedExpenses = [...prev, newExpense];
+      localStorage.setItem(`expenses-${currentDate}`, JSON.stringify(updatedExpenses)); // Ensure immediate update
+      return updatedExpenses;
+    });
+
+    setTitle(""); // Reset title
   };
 
   const updateExpense = (updatedExpense: Expense) => {
-    setExpenses(expenses.map(exp => (exp.id === updatedExpense.id ? updatedExpense : exp)));
+    setExpenses((prev) => {
+      const updatedExpenses = prev.map((exp) => (exp.id === updatedExpense.id ? updatedExpense : exp));
+      localStorage.setItem(`expenses-${currentDate}`, JSON.stringify(updatedExpenses)); // Ensure immediate update
+      return updatedExpenses;
+    });
   };
 
   const deleteExpense = (id: number) => {
-    setExpenses(expenses.filter(exp => exp.id !== id));
+    setExpenses((prev) => {
+      const updatedExpenses = prev.filter((exp) => exp.id !== id);
+      localStorage.setItem(`expenses-${currentDate}`, JSON.stringify(updatedExpenses)); // Ensure immediate update
+      return updatedExpenses;
+    });
   };
 
   return (
@@ -35,8 +75,8 @@ export default function ExpenseTracker() {
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Expense Tracker</h2>
       <FrequentTitles onSelect={setTitle} />
       <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
-      <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
       <ExpenseSummary expenses={expenses} />
+      <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
     </div>
   );
 }
