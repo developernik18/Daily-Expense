@@ -8,10 +8,10 @@ interface Title {
 }
 
 interface FrequentTitlesProps {
-  onSelect: (title: string) => void;
+  onAddExpense: (title: string, quantity: number, rate: number, paidPrice: number, unit: string) => void;
 }
 
-const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
+const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onAddExpense }) => {
   const [titles, setTitles] = useState<Title[]>(() => {
     const storedTitles = localStorage.getItem("frequentTitles");
     return storedTitles ? JSON.parse(storedTitles) : [
@@ -29,6 +29,7 @@ const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
     localStorage.setItem("frequentTitles", JSON.stringify(titles));
   }, [titles]);
 
+  // Add a new frequent title
   const addTitle = () => {
     if (!newTitle.trim() || titles.some(title => title.name === newTitle)) return;
     const newEntry: Title = { id: Date.now(), name: newTitle };
@@ -36,15 +37,21 @@ const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
     setNewTitle("");
   };
 
+  // Remove a title
   const removeTitle = (id: number) => {
     setTitles(titles.filter(title => title.id !== id));
   };
 
-  // Handle Enter key press
+  // Handle double-click to add expense with default values
+  const handleDoubleClick = (title: string) => {
+    onAddExpense(title, 1, 0, 0, "Kg");
+  };
+
+  // Handle Enter key for adding title
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      e.preventDefault(); // Prevent form submission
-      addTitle(); // Call addTitle when Enter is pressed
+      e.preventDefault();
+      addTitle();
     }
   };
 
@@ -53,8 +60,12 @@ const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
       <h3 className="font-semibold mb-2 text-gray-700">Frequent Titles</h3>
       <div className="flex gap-2 flex-wrap mb-2">
         {titles.map(({ id, name }) => (
-          <div key={id} className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md">
-            <button onClick={() => onSelect(name)} className="focus:outline-none">{name}</button>
+          <div
+            key={id}
+            className="flex items-center gap-2 bg-blue-500 text-white px-3 py-1 rounded-md cursor-pointer hover:bg-blue-600 transition"
+            onDoubleClick={() => handleDoubleClick(name)}
+          >
+            <span>{name}</span>
             <button onClick={() => removeTitle(id)} className="ml-2 text-red-200 hover:text-red-400">✕</button>
           </div>
         ))}
@@ -65,7 +76,7 @@ const FrequentTitles: React.FC<FrequentTitlesProps> = ({ onSelect }) => {
           placeholder="Add new title"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
-          onKeyDown={handleKeyDown} // Listen for Enter key press
+          onKeyDown={handleKeyDown}
         />
         <Button onClick={addTitle} className="bg-green-500 hover:bg-green-600 text-white">Add</Button>
       </div>

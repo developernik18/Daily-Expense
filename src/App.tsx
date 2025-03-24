@@ -20,6 +20,7 @@ export default function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [title, setTitle] = useState(""); // Track title input
   const currentDate = getFormattedDate();
+  const [showForm, setShowForm] = useState(false); // ✅ State to control form visibility
 
   // Load expenses from localStorage on mount
   useEffect(() => {
@@ -76,10 +77,24 @@ export default function ExpenseTracker() {
     <>
       <div className="max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Expense Tracker</h2>
-        <FrequentTitles onSelect={setTitle} />
-        <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
+        <FrequentTitles onAddExpense={addExpense} />
         <ExpenseSummary expenses={expenses} />
         <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
+      </div>
+      <div className="max-w-4xl mx-auto p-6">
+
+        {/* Toggle Expense Form Button */}
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="w-full mb-4 p-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md"
+        >
+          {showForm ? "Close Expense Form" : "Show Expense Form"}
+        </button>
+
+        {/* Expense Form (Only shown when showForm is true) */}
+        {showForm && (
+          <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
+        )}
       </div>
       <ExpenseHistory />
 
