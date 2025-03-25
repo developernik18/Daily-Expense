@@ -6,7 +6,7 @@ import ExpenseSummary from "@/components/ExpenseSummary";
 import ExpenseHistory from "@/components/ExpenseHistory";
 import ShoppingList from "@/components/ShoppingList";
 import { ShoppingItem } from "@/types";
-
+import { Button } from "@/components/ui/button";
 import { getFormattedDate } from "@/lib/dateUtils";
 
 interface Expense {
@@ -21,8 +21,12 @@ interface Expense {
 export default function ExpenseTracker() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [shoppingItems, setShoppingItems] = useState<ShoppingItem[]>([]);
+  const [showExpenseForm, setShowExpenseForm] = useState(false); // Toggle state
   const [title, setTitle] = useState("");
   const currentDate = getFormattedDate();
+
+  // Toggle expense form visibility
+  const toggleExpenseForm = () => setShowExpenseForm((prev) => !prev);
 
   // Load expenses from localStorage on mount
   useEffect(() => {
@@ -147,18 +151,28 @@ export default function ExpenseTracker() {
         shoppingItems={shoppingItems.map(item => item.title)}
       />
 
-
-      {/* Expense Form */}
-      <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />
-
       {/* Expense Summary */}
       <ExpenseSummary expenses={expenses} />
 
       {/* Expense List */}
       <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
 
+
       {/* Expense History */}
       <ExpenseHistory />
+
+
+      <div className="p-6">
+        {/* Toggle Expense Form */}
+        <div className="flex justify-center mb-4">
+          <Button onClick={toggleExpenseForm} className="bg-blue-500 text-white px-4 py-2 rounded">
+            {showExpenseForm ? "Hide Expense Form" : "Want to add more Expenses?"}
+          </Button>
+        </div>
+
+        {/* Expense Form (Only Show When Needed) */}
+        {showExpenseForm && <ExpenseForm title={title} setTitle={setTitle} onAddExpense={addExpense} />}
+      </div>
     </div>
   );
 }
