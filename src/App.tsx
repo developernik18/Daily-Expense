@@ -5,6 +5,7 @@ import ExpenseList from "@/components/ExpenseList";
 import ExpenseSummary from "@/components/ExpenseSummary";
 import ExpenseHistory from "@/components/ExpenseHistory";
 import ShoppingList from "@/components/ShoppingList";
+import { ShoppingItem } from "@/types";
 
 import { getFormattedDate } from "@/lib/dateUtils";
 
@@ -15,14 +16,6 @@ interface Expense {
   rate: number;
   paidPrice: number;
   unit: string;
-}
-
-interface ShoppingItem {
-  id: number;
-  title: string;
-  quantity: number;
-  unit: string;
-  paidPrice: number;
 }
 
 export default function ExpenseTracker() {
@@ -70,7 +63,7 @@ export default function ExpenseTracker() {
   // Add an item to the shopping list
   const addToShoppingList = (title: string) => {
     if (!title || shoppingItems.some((item) => item.title === title)) return;
-    setShoppingItems((prev) => [...prev, { id: Date.now(), title, quantity: 1, unit: "Piece", paidPrice: 0 }]);
+    setShoppingItems((prev) => [...prev, { id: Date.now(), title, quantity: 1, rate: 0, unit: "Piece", paidPrice: 0 }]);
   };
 
   // Update an item in the shopping list
