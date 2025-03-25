@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/button";
 
 interface ShoppingListControlsProps {
   item: ShoppingItem;
-  onUpdate: (item: ShoppingItem) => void;
   onDelete: (id: number) => void;
   onMoveToExpenses: (item: ShoppingItem) => void;
 }
 
-const ShoppingListControls: React.FC<ShoppingListControlsProps> = ({ item, onUpdate, onDelete, onMoveToExpenses }) => {
+const ShoppingListControls: React.FC<ShoppingListControlsProps> = ({ item, onDelete, onMoveToExpenses }) => {
   return (
     <div className="flex gap-2">
       <Button onClick={() => onMoveToExpenses(item)} className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm">

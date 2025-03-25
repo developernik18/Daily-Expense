@@ -28,7 +28,7 @@ const ShoppingListItem: React.FC<ShoppingListItemProps> = ({ item, onUpdate, onD
           </div>
           <div className="flex gap-2">
             <button onClick={() => setIsEditing(true)} className="text-blue-500 hover:underline px-4">Edit</button>
-            <ShoppingListControls item={item} onUpdate={onUpdate} onDelete={onDelete} onMoveToExpenses={onMoveToExpenses} />
+            <ShoppingListControls item={item} onDelete={onDelete} onMoveToExpenses={onMoveToExpenses} />
           </div>
         </div>
       )}
