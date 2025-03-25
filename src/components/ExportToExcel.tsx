@@ -2,6 +2,25 @@ import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 import { getFormattedDate } from "@/lib/dateUtils"; // Import formatted date function
 
+// Define Expense type
+interface Expense {
+  id: number;
+  title: string;
+  quantity: number;
+  unit: string;
+  rate: number;
+  paidPrice: number;
+}
+
+// Define ShoppingItem type
+interface ShoppingItem {
+  id: number;
+  title: string;
+  quantity: number;
+  unit: string;
+  paidPrice: number;
+}
+
 const ExportToExcel = () => {
   const handleExport = () => {
     const currentDate = getFormattedDate(); // Use the correct date format (DD-MM-YYYY)
@@ -10,12 +29,12 @@ const ExportToExcel = () => {
     const expenses = localStorage.getItem(`expenses-${currentDate}`);
     const shoppingList = localStorage.getItem("shoppingList");
 
-    // Parse data
-    const expenseData = expenses ? JSON.parse(expenses) : [];
-    const shoppingData = shoppingList ? JSON.parse(shoppingList) : [];
+    // Parse data with types
+    const expenseData: Expense[] = expenses ? JSON.parse(expenses) : [];
+    const shoppingData: ShoppingItem[] = shoppingList ? JSON.parse(shoppingList) : [];
 
     // Prepare worksheet data
-    const expenseSheet = expenseData.map((exp: any) => ({
+    const expenseSheet = expenseData.map((exp) => ({
       Title: exp.title,
       Quantity: exp.quantity,
       Unit: exp.unit,
@@ -23,7 +42,7 @@ const ExportToExcel = () => {
       Paid: exp.paidPrice,
     }));
 
-    const shoppingSheet = shoppingData.map((item: any) => ({
+    const shoppingSheet = shoppingData.map((item) => ({
       Title: item.title,
       Quantity: item.quantity,
       Unit: item.unit,
