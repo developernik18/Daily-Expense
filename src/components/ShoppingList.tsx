@@ -10,7 +10,7 @@ interface ShoppingListProps {
 
 const ShoppingList: React.FC<ShoppingListProps> = ({ shoppingItems, onUpdateShoppingItem, onDeleteShoppingItem, onMoveToExpenses }) => {
   return (
-    <div className="p-4 bg-gray-100 rounded-lg">
+    <div className="p-4 bg-gray-100 rounded-lg mb-6">
       <h3 className="font-semibold text-lg mb-3 text-gray-700">Shopping List</h3>
       {shoppingItems.length === 0 ? (
         <p className="text-gray-500">No items in the shopping list.</p>
