@@ -8,6 +8,7 @@ import ShoppingList from "@/components/ShoppingList";
 import { ShoppingItem } from "@/types";
 import { Button } from "@/components/ui/button";
 import { getFormattedDate } from "@/lib/dateUtils";
+import ExportToExcel from "@/components/ExportToExcel";
 
 interface Expense {
   id: number;
@@ -157,6 +158,10 @@ export default function ExpenseTracker() {
       {/* Expense List */}
       <ExpenseList expenses={expenses} onUpdateExpense={updateExpense} onDeleteExpense={deleteExpense} />
 
+      {/*Export stored data to Excel  */}
+      <div className="p-6 flex justify-center">
+        <ExportToExcel />
+      </div>
 
       {/* Expense History */}
       <ExpenseHistory />
