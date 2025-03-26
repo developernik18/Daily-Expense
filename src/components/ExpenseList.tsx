@@ -25,7 +25,7 @@ const ExpenseList: React.FC<ExpenseListProps> = ({ expenses, onUpdateExpense, on
       {expenses.length === 0 ? (
         <p className="text-gray-500 text-center">No expenses added yet.</p>
       ) : (
-        <ul className="mt-4 bg-white p-2 rounded-lg shadow">
+        <ul className="mt-4 bg-white p-2 rounded-lg">
           {expenses.map((expense) => (
             <ExpenseItem
               key={expense.id}
