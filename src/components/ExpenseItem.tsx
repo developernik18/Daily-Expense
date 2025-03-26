@@ -79,7 +79,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, onUpdateExpense, onD
                 value={editedExpense.rate}
                 onChange={(e) => setEditedExpense({ ...editedExpense, rate: parseFloat(e.target.value) || 0 })}
                 placeholder="Rate"
-                className="pl-6 border rounded-md p-2"
+                className="p-2 pl-6 border rounded-md"
               />
             </div>
 
@@ -90,7 +90,7 @@ const ExpenseItem: React.FC<ExpenseItemProps> = ({ expense, onUpdateExpense, onD
                 value={editedExpense.paidPrice}
                 onChange={(e) => setEditedExpense({ ...editedExpense, paidPrice: parseFloat(e.target.value) || 0 })}
                 placeholder="Paid Amount"
-                className="pl-6 border rounded-md p-2"
+                className="p-2 pl-6 border rounded-md"
               />
             </div>
           </div>

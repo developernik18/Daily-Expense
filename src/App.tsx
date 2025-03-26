@@ -87,7 +87,7 @@ export default function ExpenseTracker() {
       id: Date.now(),
       title: item.title,
       quantity: item.quantity,
-      rate: 0, // User should edit later
+      rate: item.rate, // User should edit later
       paidPrice: item.paidPrice,
       unit: item.unit,
     };
